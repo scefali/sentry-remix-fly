@@ -8,12 +8,13 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { withSentry } from "@sentry/remix";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
-export default function App() {
+function App() {
   return (
     <html lang="en">
       <head>
@@ -31,3 +32,5 @@ export default function App() {
     </html>
   );
 }
+
+export default withSentry(App);

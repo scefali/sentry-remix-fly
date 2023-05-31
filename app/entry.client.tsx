@@ -4,9 +4,29 @@
  * For more information, see https://remix.run/file-conventions/entry.client
  */
 
-import { RemixBrowser } from "@remix-run/react";
-import { startTransition, StrictMode } from "react";
+import { RemixBrowser, useLocation, useMatches} from "@remix-run/react";
+import { startTransition, StrictMode, useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
+import * as Sentry from "@sentry/remix";
+
+Sentry.init({
+  dsn: "https://a5df3b6db2ce4baabb66c9aae429dbee:e224a73494d749c79a2dac80f4d00e5a@o4505059212656640.ingest.sentry.io/4505275468677120",
+  integrations: [
+    new Sentry.BrowserTracing({
+      routingInstrumentation: Sentry.remixRouterInstrumentation(
+        useEffect,
+        useLocation,
+        useMatches
+      ),
+    }),
+    new Sentry.Replay(),
+  ],
+  // Performance Monitoring
+  tracesSampleRate: 1.0, // Capture 100% of the transactions, reduce in production!
+  // Session Replay
+  replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+  replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+});
 
 startTransition(() => {
   hydrateRoot(

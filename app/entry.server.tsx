@@ -11,6 +11,13 @@ import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
+import * as Sentry from "@sentry/remix";
+
+Sentry.init({
+  dsn: "https://a5df3b6db2ce4baabb66c9aae429dbee:e224a73494d749c79a2dac80f4d00e5a@o4505059212656640.ingest.sentry.io/4505275468677120",
+  // Performance Monitoring
+  tracesSampleRate: 1.0, // Capture 100% of the transactions, reduce in production!
+});
 
 const ABORT_DELAY = 5_000;
 
